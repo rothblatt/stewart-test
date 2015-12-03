@@ -1,10 +1,8 @@
 var Clarifai = require('./clarifai_node.js');
 
-var stdio = require('stdio');
-
 Clarifai.initAPI("AxMwLCzK9lAlmPJsQjxobZ3MZbw1NJKxtrien4l8","Ot4UN3pkCG3VPWwoSQ4pbfRPXWvUVWV9sgVpu8xL");
 
-unction commonResultHandler( err, res ) {
+function commonResultHandler( err, res ) {
 	if( err != null ) {
 		if( typeof err["status_code"] === "string" && err["status_code"] === "TIMEOUT") {
 			console.log("TAG request timed out");
@@ -24,12 +22,6 @@ unction commonResultHandler( err, res ) {
 		}
 	}
 	else {
-		if( opts["print-results"] ) {
-			// if some images were successfully tagged and some encountered errors,
-			// the status_code PARTIAL_ERROR is returned. In this case, we inspect the
-			// status_code entry in each element of res["results"] to evaluate the individual
-			// successes and errors. if res["status_code"] === "OK" then all images were 
-			// successfully tagged.
 			if( typeof res["status_code"] === "string" && 
 				( res["status_code"] === "OK" || res["status_code"] === "PARTIAL_ERROR" )) {
 
@@ -53,14 +45,12 @@ unction commonResultHandler( err, res ) {
 	}
 }
 
-function exampleTagSingleURL() {
-	var testImageURL = 'http://assets.worldwildlife.org/photos/946/images/story_full_width/forests-why-matter_63516847.jpg?1345534028';
-	var ourId = "forest_1"; // this is any string that identifies the image to your system
+function tagmyURL () {
+	var URL = 'http://assets.worldwildlife.org/photos/946/images/carousel_small/forests-why-matter_63516847.jpg?1345534028';
+	var ID = "forest";
 
-	// Clarifai.setRequestTimeout( 100 ); // in ms - expect: force a timeout response
-	// Clarifai.setRequestTimeout( 100 ); // in ms - expect: ensure no timeout 
-
-	Clarifai.tagURL( testImageURL , ourId, commonResultHandler );
+	Clarifai.tagURL(URL, ID, commonResultHandler );
 }
 
+tagmyURL();
 
